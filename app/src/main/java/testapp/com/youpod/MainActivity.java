@@ -3,13 +3,11 @@ package testapp.com.youpod;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.transition.TransitionManager;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.transition.Scene;
-import android.view.ViewGroup;
-import android.view.View;
-import android.widget.Button;
+
+import testapp.com.youpod.ui.LayoutManager;
+import testapp.com.youpod.ui.UIVideoList;
 
 
 public class MainActivity extends AppCompatActivity
@@ -20,6 +18,7 @@ public class MainActivity extends AppCompatActivity
 
     private UIVideoList list;
     private YoutubeListManager listManager;
+    private LayoutManager layoutMan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,24 +27,9 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        ViewGroup view = (ViewGroup) findViewById(android.R.id.content);
-        Scene scene1 = Scene.getSceneForLayout(view,
-                R.layout.content_main2, this);
 
-        final Scene scene2 = Scene.getSceneForLayout(view,
-                R.layout.content_main, this);
-
-        scene1.enter();
         list = new UIVideoList(this);
-        Button button= (Button) findViewById(R.id.inspect_playlist);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TransitionManager.go(scene2);
-
-                YoutubeListManager y = new YoutubeListManager(list);
-            }
-        });
+        layoutMan = new LayoutManager(this);
         //list = new UIVideoList(this);
         //YoutubeListManager y = new YoutubeListManager(list);
     }

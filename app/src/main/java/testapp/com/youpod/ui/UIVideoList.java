@@ -1,4 +1,4 @@
-package testapp.com.youpod;
+package testapp.com.youpod.ui;
 
 import android.app.Activity;
 import android.widget.ListView;
@@ -6,6 +6,9 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import android.widget.ArrayAdapter;
 import java.util.List;
+
+import testapp.com.youpod.R;
+import testapp.com.youpod.VideoItem;
 
 /**
  * Created by Jeremy on 4/17/2016.
