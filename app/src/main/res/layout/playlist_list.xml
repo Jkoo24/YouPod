@@ -1,7 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/content_main2"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal|top">
 
     <Button
         android:layout_width="wrap_content"
@@ -14,23 +15,50 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:padding="10dp"
+        android:background="#837E7C"
+        android:gravity="center_horizontal|top"
+        android:id="@+id/linearLayout">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="+"
-            android:id="@+id/add_playlist"
-            android:clickable="false"
-            android:textSize="40dp" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal|top"
+            android:baselineAligned="false"
+            android:layout_gravity="center_horizontal|top">
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/editText"
-            android:layout_weight="1" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+"
+                android:id="@+id/add_playlist"
+                android:clickable="false"
+                android:textSize="40dp"
+                android:textStyle="bold"
+                android:layout_marginRight="10dp" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/new_playlist_url"
+                android:layout_weight="1"
+                android:background="@drawable/rect_text_edit"
+                android:singleLine="true"
+                android:padding="10dp"
+                android:layout_gravity="center_vertical" />
+        </LinearLayout>
 
     </LinearLayout>
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/list_view_playlist"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/linearLayout" />
 </RelativeLayout>
