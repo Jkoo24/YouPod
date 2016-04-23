@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import testapp.com.youpod.ui.LayoutManager;
 import testapp.com.youpod.ui.UIVideoList;
 import testapp.com.youpod.ui.menu.UIMenuPlaylists;
+import testapp.com.youpod.youtube.YoutubeListManager;
 
 
 public class MainActivity extends AppCompatActivity
@@ -19,7 +20,6 @@ public class MainActivity extends AppCompatActivity
     public static final String TAG = "YouPod";
 
     private UIVideoList list;
-    private YoutubeListManager listManager;
     private LayoutManager layoutMan;
 
     private FragmentManager fragmentManager;
@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        YoutubeListManager.Instance().setContext(this); //init
 
         list = new UIVideoList(this);
         //layoutMan = new LayoutManager(this);
@@ -44,14 +45,6 @@ public class MainActivity extends AppCompatActivity
         UIMenuPlaylists myFrag= new UIMenuPlaylists();
         fragTransaction.add(R.id.fragment_frame, myFrag , "fragment_play_list");
         fragTransaction.commit();
-
-//        FragmentTransaction transaction = fragmentManager.beginTransaction();
-//        transaction.setCustomAnimations(R.anim.enter_left, R.anim.exit_left, R.anim.pop_enter_left, R.anim.pop_exit_left);
-//
-//        UIMenuClipList newCustomFragment = UIMenuClipList.newInstance();
-//        transaction.replace(R.id.fragment_container, newCustomFragment );
-//        transaction.addToBackStack(null);
-//        transaction.commit();
     }
 
     public void goToFragment(Fragment f, boolean transitionLeft)

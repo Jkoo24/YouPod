@@ -1,4 +1,4 @@
-package testapp.com.youpod;
+package testapp.com.youpod.youtube;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -6,27 +6,30 @@ import android.util.Log;
 import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.PlaylistItem;
 import com.google.api.services.youtube.model.PlaylistItemListResponse;
-import com.google.api.services.youtube.model.Playlist;
 
 import org.json.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import testapp.com.youpod.MainActivity;
+import testapp.com.youpod.VideoItem;
+
 /**
  * Created by Jeremy on 4/17/2016.
  */
-public class YoutubePlaylistRequest extends AsyncTask<Object, Void,  List<PlaylistItem>>
+public class YoutubePlaylistListRequest extends AsyncTask<Object, Void,  List<PlaylistItem>>
 {
-    private YoutubeListManager listMan;
+    private YoutubeRequestListener listener;
 
     protected  List<PlaylistItem> doInBackground(Object... params)
     {
         try {
             long time = System.currentTimeMillis();
-            listMan = (YoutubeListManager) params[0];
+            listener = (YoutubeRequestListener) params[0];
             YouTube youtube = (YouTube) params[1];
             String playlistId = (String) params[2];
+
 
             List<PlaylistItem> videoList = new ArrayList<PlaylistItem>();
             YouTube.PlaylistItems.List query;
@@ -85,9 +88,8 @@ public class YoutubePlaylistRequest extends AsyncTask<Object, Void,  List<Playli
         }
         catch(Exception e)
         {
-            Log.e(MainActivity.TAG, "Error parsing Playlist JSON. reason = " + e.getLocalizedMessage());
+            Log.e(MainActivity.TAG, "Error parsing PlaylistItem JSON. reason = " + e.getLocalizedMessage());
         }
 
-        listMan.updatList(videos);
     }
 }

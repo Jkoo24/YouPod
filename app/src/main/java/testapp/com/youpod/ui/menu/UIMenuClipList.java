@@ -15,7 +15,7 @@ import android.widget.Button;
 /**
  * Created by Jeremy on 4/19/2016.
  */
-public class UIMenuClipList  extends Fragment
+public class UIMenuClipList  extends UIMenuFragment
 {
     MainActivity baseAct;
     @Override

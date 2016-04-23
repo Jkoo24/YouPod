@@ -1,36 +1,36 @@
 package testapp.com.youpod.ui.menu;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import  testapp.com.youpod.ui.menu.adapter.PlaylistAdapter;
+import testapp.com.youpod.PlaylistItem;
+import testapp.com.youpod.ui.menu.adapter.PlaylistAdapter;
+import testapp.com.youpod.youtube.YoutubeListManager;
 
 import testapp.com.youpod.MainActivity;
-import testapp.com.youpod.Playlist;
 import testapp.com.youpod.R;
+import testapp.com.youpod.youtube.YoutubeManagerListener;
 
 /**
  * Created by Jeremy on 4/19/2016.
  */
-public class UIMenuPlaylists extends Fragment
+public class UIMenuPlaylists extends UIMenuFragment
 {
     private MainActivity baseAct;
 
     private ListView playlistList;
     private TextView newPlayListTextEntry;
 
-    private ArrayList<Playlist> playlists = new ArrayList<Playlist>();
+    private ArrayList<PlaylistItem> playlistItems = new ArrayList<PlaylistItem>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,35 +55,35 @@ public class UIMenuPlaylists extends Fragment
         super.onViewCreated(view, savedInstanceState);
         playlistList = (ListView) view.findViewById(R.id.list_view_playlist);
         newPlayListTextEntry = (TextView) view.findViewById(R.id.new_playlist_url);
-
-        Button inspect = (Button) view.findViewById(R.id.inspect_playlist);
         Button addPlaylist = (Button) view.findViewById(R.id.add_playlist);
 
 
-        inspect.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                inspectPlaylist(v);
-            }
-        });
         addPlaylist.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 addPlaylist(v);
             }
         });
-    }
 
-    public void inspectPlaylist(View v)
-    {
-        System.out.println("clicked");
-        baseAct.goToFragment(new UIMenuClipList(), true);
+        playlistItems = YoutubeListManager.Instance().getPlayLists();
+        populate();
     }
 
     public void addPlaylist(View v)
     {
-        System.out.println("clicked2");
-        playlists.add(new Playlist(newPlayListTextEntry.getText().toString()));
+        YoutubeListManager.Instance().setDelegate(this);
+        YoutubeListManager.Instance().requestPlaylistData(newPlayListTextEntry.getText().toString());
+    }
 
-        PlaylistAdapter itemsAdapter = new PlaylistAdapter(baseAct, playlists);
+    @Override
+    public void onPlaylistAdded(PlaylistItem item)
+    {
+        YoutubeListManager.Instance().removeDelegate(this);
+        populate();
+    }
+
+    private void populate()
+    {
+        PlaylistAdapter itemsAdapter = new PlaylistAdapter(baseAct, playlistItems);
         playlistList.setAdapter(itemsAdapter);
     }
 }
