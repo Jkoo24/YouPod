@@ -30,7 +30,7 @@ public class UIMenuPlaylists extends UIMenuFragment
     private ListView playlistList;
     private TextView newPlayListTextEntry;
 
-    private ArrayList<PlaylistItem> playlistItems = new ArrayList<PlaylistItem>();
+    private ArrayList<PlaylistItem.MetaData> playlistItems = new ArrayList<PlaylistItem.MetaData>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,8 +64,11 @@ public class UIMenuPlaylists extends UIMenuFragment
             }
         });
 
-        playlistItems = YoutubeListManager.Instance().getPlayLists();
+        playlistItems = YoutubeListManager.Instance().getMetaDataList();
         populate();
+
+        //change title text
+        baseAct.updateToolbar("Playlists", R.menu.menu_main);
     }
 
     public void addPlaylist(View v)
@@ -77,6 +80,7 @@ public class UIMenuPlaylists extends UIMenuFragment
     @Override
     public void onPlaylistAdded(PlaylistItem item)
     {
+        playlistItems.add(item.getMetaData());
         YoutubeListManager.Instance().removeDelegate(this);
         populate();
     }

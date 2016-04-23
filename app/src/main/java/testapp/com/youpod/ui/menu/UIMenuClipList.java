@@ -1,23 +1,29 @@
 package testapp.com.youpod.ui.menu;
 
 import testapp.com.youpod.MainActivity;
+import testapp.com.youpod.PlaylistItem;
 import testapp.com.youpod.R;
+import testapp.com.youpod.ui.menu.adapter.CliplistAdapter;
+import testapp.com.youpod.ui.menu.adapter.PlaylistAdapter;
+import testapp.com.youpod.youtube.YoutubeListManager;
 
 import android.content.Context;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ListView;
 
 /**
  * Created by Jeremy on 4/19/2016.
  */
 public class UIMenuClipList  extends UIMenuFragment
 {
-    MainActivity baseAct;
+    private MainActivity baseAct;
+    private PlaylistItem currentPlaylist;
+
+    private ListView uiVideoList;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -32,20 +38,27 @@ public class UIMenuClipList  extends UIMenuFragment
 
         baseAct = (MainActivity) context;
 
-        //Button button= (Button) getView().findViewById(R.id.inspect_playlist);
+        YoutubeListManager.Instance().setDelegate(this);
+    }
 
+    @Override
+    public void onDetach ()
+    {
+        super.onDetach();
+
+        YoutubeListManager.Instance().removeDelegate(this);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Button button = (Button) view.findViewById(R.id.test_button);
 
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                inspectPlaylist(v);
-            }
-        });
+        uiVideoList = (ListView) view.findViewById(R.id.list_view_clips);
+
+        //change title text and poluate clip list
+        currentPlaylist = YoutubeListManager.Instance().getSelectedPlaylist();
+        baseAct.updateToolbar(currentPlaylist.getMetaData().title, R.menu.menu_cliplist);
+        populate();
     }
 
     public void inspectPlaylist(View v)
@@ -54,5 +67,16 @@ public class UIMenuClipList  extends UIMenuFragment
         baseAct.goToFragment(new UIMenuPlaylists(), false);
     }
 
+    @Override
+    public void onPlaylistListUpdated(String id)
+    {
+        System.out.println("UIMenuClipList.onPlaylistListUpdated() was informed " + id);
+        populate();
+    }
 
+    private void populate()
+    {
+        CliplistAdapter itemsAdapter = new CliplistAdapter(baseAct, currentPlaylist.getVideoList());
+        uiVideoList.setAdapter(itemsAdapter);
+    }
 }

@@ -51,7 +51,7 @@ public class YoutubePlaylistRequest extends AsyncTask<Object, Void,  PlaylistIte
         catch(Exception e)
         {
             Log.e(MainActivity.TAG, "There was a issue parsing the playlist response. reason = " + e.getLocalizedMessage());
-            listener.onRequestPlayistRecieved(null);
+            listener.onRequestFailed("There was retrieving the playlist");
             return null;
         }
     }

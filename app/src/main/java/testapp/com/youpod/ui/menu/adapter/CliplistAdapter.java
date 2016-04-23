@@ -11,34 +11,35 @@ import java.util.ArrayList;
 import testapp.com.youpod.MainActivity;
 import testapp.com.youpod.PlaylistItem;
 import testapp.com.youpod.R;
+import testapp.com.youpod.VideoItem;
 import testapp.com.youpod.ui.menu.UIMenuClipList;
 import testapp.com.youpod.youtube.YoutubeListManager;
 
 /**
  * Created by Jeremy on 4/21/2016.
  */
-public class PlaylistAdapter extends ArrayAdapter<PlaylistItem.MetaData>
+public class CliplistAdapter extends ArrayAdapter<VideoItem>
 {
     MainActivity mainAct;
-    ArrayList<PlaylistItem.MetaData> playlists;
+    ArrayList<VideoItem> videos;
 
-    public PlaylistAdapter(MainActivity act, ArrayList<PlaylistItem.MetaData> playlistItems) {
-        super(act, 0, playlistItems);
+    public CliplistAdapter(MainActivity act, ArrayList<VideoItem> videosItems) {
+        super(act, 0, videosItems);
         mainAct = act;
-        playlists = playlistItems;
+        videos = videosItems;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        PlaylistItem.MetaData playlistItem = getItem(position);
+        VideoItem video = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.playlist_list_item, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.playlist_item, parent, false);
         }
 
-        Button playlistButton = (Button) convertView.findViewById(R.id.inspect_playlist);
-        playlistButton.setOnClickListener(new View.OnClickListener() {
+        Button clipButton = (Button) convertView.findViewById(R.id.inspect_clip);
+        clipButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 inspectPlaylist(v);
             }
@@ -46,17 +47,14 @@ public class PlaylistAdapter extends ArrayAdapter<PlaylistItem.MetaData>
 
 
         // Populate the data into the template view using the data object
-        playlistButton.setText(playlistItem.title);
-        playlistButton.setTag(position);
+        clipButton.setText(video.getTitle());
+        clipButton.setTag(position);
         // Return the completed view to render on screen
         return convertView;
     }
 
     public void inspectPlaylist(View v)
     {
-        PlaylistItem.MetaData p = playlists.get((Integer) v.getTag());
-        YoutubeListManager.Instance().selectedPlaylist(p.id);
-
-        mainAct.goToFragment(new UIMenuClipList(), true);
+        System.out.println("CliplistAdapter.inspectPlaylist() clicked on = " + v.getTag());
     }
 }

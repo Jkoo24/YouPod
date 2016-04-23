@@ -1,6 +1,9 @@
 package testapp.com.youpod.youtube;
 
+import java.util.ArrayList;
+
 import testapp.com.youpod.PlaylistItem;
+import testapp.com.youpod.VideoItem;
 
 /**
  * Created by Jeremy on 4/22/2016.
@@ -8,6 +11,6 @@ import testapp.com.youpod.PlaylistItem;
 public interface YoutubeRequestListener
 {
     public void onRequestPlayistRecieved(PlaylistItem data);
-    public void onRequestPlayistListRecieved();
+    public void onRequestPlayistListRecieved(String playlistId, ArrayList<VideoItem> a);
     public void onRequestFailed(String message);
 }

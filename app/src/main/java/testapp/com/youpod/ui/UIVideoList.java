@@ -22,7 +22,7 @@ public class UIVideoList
     {
         this.activity = activity;
 
-        list = (ListView) activity.findViewById(R.id.listView);
+        //list = (ListView) activity.findViewById(R.id.listView);
     }
 
     public void populate(List<VideoItem> items)

@@ -8,4 +8,5 @@ import testapp.com.youpod.PlaylistItem;
 public interface YoutubeManagerListener
 {
     public void onPlaylistAdded(PlaylistItem item);
+    public void onPlaylistListUpdated(String id);
 }

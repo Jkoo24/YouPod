@@ -1,16 +1,19 @@
 package testapp.com.youpod;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import testapp.com.youpod.ui.LayoutManager;
 import testapp.com.youpod.ui.UIVideoList;
+import testapp.com.youpod.ui.menu.UIMenuFragment;
 import testapp.com.youpod.ui.menu.UIMenuPlaylists;
 import testapp.com.youpod.youtube.YoutubeListManager;
 
@@ -19,16 +22,17 @@ public class MainActivity extends AppCompatActivity
 {
     public static final String TAG = "YouPod";
 
+    private Toolbar toolbar;
+
     private UIVideoList list;
     private LayoutManager layoutMan;
-
     private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         YoutubeListManager.Instance().setContext(this); //init
@@ -47,7 +51,7 @@ public class MainActivity extends AppCompatActivity
         fragTransaction.commit();
     }
 
-    public void goToFragment(Fragment f, boolean transitionLeft)
+    public void goToFragment(UIMenuFragment f, boolean transitionLeft)
     {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         if(transitionLeft)
@@ -60,10 +64,17 @@ public class MainActivity extends AppCompatActivity
         transaction.commit();
     }
 
+    public void updateToolbar(String newText, int toolBarId)
+    {
+        toolbar.getMenu().clear();
+        getMenuInflater().inflate(toolBarId, toolbar.getMenu());
+        toolbar.setTitle(newText);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        //dont inflate meu. let fragments dictate the toolbar context using updateToolbar
+        updateToolbar("Playlists", R.menu.menu_main);
         return true;
     }
 
@@ -75,7 +86,15 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_settings)
+        {
+            return true;
+        }
+        else if(id == R.id.action_refresh_list)
+        {
+            PlaylistItem p = YoutubeListManager.Instance().getSelectedPlaylist();
+            if(p != null)
+                YoutubeListManager.Instance().requestPlaylistListData(p.getMetaData().id);
             return true;
         }
 
